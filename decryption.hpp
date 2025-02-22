@@ -7,7 +7,6 @@
 
 class decryption {
 public:
-	decryption() : decryption("Hello, world!") {}
 	decryption(const std::string& msg);
 	void parse();
 	void insertInMatrix();
