@@ -2,7 +2,12 @@
 
 encryption::encryption(const std::string& msg) { // constructor for encryption class
 	message = msg;
-	message_size = msg.size();
+	parse();
+	insertInMatrix();
+	transposeMatrix();
+	shiftOperations();
+	unParse();
+	sendToFile();
 }
 
 /*-----------------------------------------------------------------
@@ -98,7 +103,7 @@ void encryption::sendToFile() {
 	// temporary just for debugging
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
-			out << matrix[i][j] << " ";
+			out << matrixTransposed[i][j] << " ";
 		}
 		out << "\n";
 	}
