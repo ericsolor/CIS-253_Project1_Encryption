@@ -39,3 +39,37 @@ void encryption::insertInMatrix() {
 	}
 }
 
+/*--------------------------------------------------------------------------
+Transposing the original matrix using matrixTransposed as the updated matrix
+*///------------------------------------------------------------------------
+void encryption::transposeMatrix() {
+	matrixTransposed.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
+
+	for (int i = 0; i < n; i++) { // looping through the rows
+		for (int j = 0; j < n; j++) { // looping through the columns
+			matrixTransposed[i][j] = matrix[j][i]; // using the definition of transposing a matrix
+		}
+	}
+}
+
+/*---------------------------------------------------------------------------
+Primary function responsible for encrypting the message by performing bitwise
+operations on the matrix rotating bits left if the current column is even or
+rotating bits right if the current column is odd
+*///-------------------------------------------------------------------------
+void encryption::shiftOperations() {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (j % 2 == 0) {
+				matrixTransposed[i][j] = (matrixTransposed[i][j] << 1);
+			}
+			else {
+				matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1);
+			}
+		}
+	}
+}
+
+/*
+
+*/
