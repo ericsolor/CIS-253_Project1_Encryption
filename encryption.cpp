@@ -45,8 +45,8 @@ Transposing the original matrix using matrixTransposed as the updated matrix
 void encryption::transposeMatrix() {
 	matrixTransposed.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
 
-	for (int i = 0; i < n; i++) { // looping through the rows
-		for (int j = 0; j < n; j++) { // looping through the columns
+	for (int i = 0; i < n; i++) { // traversing through the rows
+		for (int j = 0; j < n; j++) { // traversing through the columns
 			matrixTransposed[i][j] = matrix[j][i]; // using the definition of transposing a matrix
 		}
 	}
@@ -58,18 +58,49 @@ operations on the matrix rotating bits left if the current column is even or
 rotating bits right if the current column is odd
 *///-------------------------------------------------------------------------
 void encryption::shiftOperations() {
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (j % 2 == 0) {
-				matrixTransposed[i][j] = (matrixTransposed[i][j] << 1);
+	for (int i = 0; i < n; i++) { // traversing through rows
+		for (int j = 0; j < n; j++) { // traversing through columns
+			if (j % 2 == 0) { // determing if row is even
+				matrixTransposed[i][j] = (matrixTransposed[i][j] << 1); // rotating bits left
 			}
-			else {
-				matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1);
+			else { // else it is odd
+				matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1); // rotating bits right
 			}
 		}
 	}
 }
 
-/*
+/*---------------------------------------------------------------------
+This function is to unparse the matrix into a vector then into a string
+*///-------------------------------------------------------------------
+void encryption::unParse() {
+	ENparsed.resize(n * n); // resizing the vector into size n^2
 
-*/
+	for (int i = 0; i < n; i++) { // traversing through rows
+		for (int j = 0; j < n; j++) { // traversing through columns
+			ENparsed.push_back(matrixTransposed[i][j]); // inserting characters from current position in matrix to vector
+		}
+	}
+
+	for (char c : ENparsed) { // traversing through every character in vector
+		encrypted_message += c; // appending character into the string
+	}
+}
+
+/*----------------------------------------------------------
+This function sends the encrypted message into encrypted.txt
+*///--------------------------------------------------------
+void encryption::sendToFile() {
+	std::ofstream out("encrypted_message.txt"); // opening the file (most likely creating a new file)
+
+	out << encrypted_message; // sending encrypted message to the file
+
+	// temporary just for debugging
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			out << matrix[i][j] << " ";
+		}
+		out << "\n";
+	}
+	out.close(); // closing the file
+}
