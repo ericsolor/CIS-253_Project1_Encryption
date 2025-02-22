@@ -3,10 +3,11 @@
 
 #include <fstream>
 #include <string>
-#include <iostream>
 #include <vector>
+
 class encryption {
 public:
+	encryption() : encryption("Hello, world!") {}
 	encryption(const std::string& msg);
 	std::string getMessage() { return message; }
 	std::string getEncryptedMessage() { return encrypted_message; }
