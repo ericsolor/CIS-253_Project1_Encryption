@@ -6,7 +6,7 @@ decryption::decryption(const std::string& msg) { // constructor for encryption c
 	encrypted_message = msg;
 	parse();
 	insertInMatrix();
-	shiftOperations();
+	//shiftOperations();
 	transposeMatrix();
 	unParse();
 	sendToFile();

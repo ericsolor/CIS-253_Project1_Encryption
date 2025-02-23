@@ -11,9 +11,9 @@ public:
 	int getN() { return n; }
 	void parse();
 	void insertInMatrix();
+	void shiftOperations();
 	void transposeMatrix();
 	void sendToFile();
-	void shiftOperations();
 	void unParse();
 
 private:
