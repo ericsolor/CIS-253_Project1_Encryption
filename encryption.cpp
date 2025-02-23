@@ -7,7 +7,7 @@ encryption::encryption(const std::string& msg) { // constructor for encryption c
 	parse();
 	insertInMatrix();
 	transposeMatrix();
-	//shiftOperations();
+	shiftOperations();
 	unParse();
 	sendToFile();
 }
@@ -90,12 +90,14 @@ rotating bits right if the current column is odd
 void encryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
+			char c = matrixTransposed[i][j][0];
 			if (j % 2 == 0) { // determing if row is even
-				//matrixTransposed[i][j] = (matrixTransposed[i][j] << 1); // rotating bits left
+				c = (c << 1); // rotating bits left
 			}
 			else { // else it is odd
-				//matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1); // rotating bits right
+				c = (c >> 1); // rotating bits right
 			}
+			matrixTransposed[i][j] = std::string(1, c);
 		}
 	}
 }

@@ -6,7 +6,7 @@ decryption::decryption(const std::string& msg) { // constructor for encryption c
 	encrypted_message = msg;
 	parse();
 	insertInMatrix();
-	//shiftOperations();
+	shiftOperations();
 	transposeMatrix();
 	unParse();
 	sendToFile();
@@ -85,18 +85,18 @@ operations on the matrix rotating bits left if the current column is even or
 rotating bits right if the current column is odd
 *///-------------------------------------------------------------------------
 void decryption::shiftOperations() {
-	std::cout << "made it to shift operations\n";
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
+			char c = matrix[i][j][0];
 			if (j % 2 == 0) { // determing if row is even
-				//matrix[i][j] = (matrix[i][j] >> 1); // rotating bits left
+				c = (c >> 1); // rotating bits left
 			}
 			else { // else it is odd
-				//matrix[i][j] = (matrix[i][j] << 1); // rotating bits right
+				c = (c << 1); // rotating bits right
 			}
+			matrix[i][j] = std::string(1, c);
 		}
 	}
-	std::cout << "made it through shitOperations\n";
 }
 
 /*---------------------------------------------------------------------
