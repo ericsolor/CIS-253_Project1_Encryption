@@ -40,7 +40,7 @@ void encryption::parse() {
 Inserting the parsed message in the matrix sized nxn
 *///------------------------------------------------
 void encryption::insertInMatrix() {
-	matrix.resize(n, std::vector<std::string>(n, '0')); // resizing the 2-D vector matrix to n x n and initializing to 0 to
+	matrix.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector matrix to n x n and initializing to 0 to
 												 // avoid errors
 	int index = 0;
 
@@ -64,7 +64,7 @@ void encryption::insertInMatrix() {
 Transposing the original matrix using matrixTransposed as the updated matrix
 *///------------------------------------------------------------------------
 void encryption::transposeMatrix() {
-	matrixTransposed.resize(n, std::vector<std::string>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
+	matrixTransposed.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector to n x n and initializing it to zero
 
 	for (int i = 0; i < n; i++) { // traversing through the rows
 		for (int j = 0; j < n; j++) { // traversing through the columns
