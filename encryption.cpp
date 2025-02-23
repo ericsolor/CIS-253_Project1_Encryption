@@ -97,8 +97,7 @@ void encryption::unParse() {
 This function sends the encrypted message into encrypted.txt
 *///--------------------------------------------------------
 void encryption::sendToFile() {
-	std::ofstream out("encrypted_message.txt"); // opening the file (most likely creating a new file)
-
+	std::ofstream out("encrypted_message.txt", std::ios::binary); // opening the file in binary?
 	out << encrypted_message; // sending encrypted message to the file
 
 	out.close(); // closing the file
