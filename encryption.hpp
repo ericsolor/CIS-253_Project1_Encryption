@@ -7,9 +7,10 @@
 
 class encryption {
 public:
-	encryption() : encryption("Hello, world!") {}
-	encryption(const std::string& msg);
+	encryption() : encryption("Hello, world!", true) {}
+	encryption(const std::string& msg, bool demo = false);
 	int getN() { return n; }
+	bool getDemoMode() { return demoMode; }
 	void parse();
 	void insertInMatrix();
 	void transposeMatrix();
@@ -18,6 +19,7 @@ public:
 	void unParse();
 
 private:
+	bool demoMode = false;
 	std::string message;
 	std::string encrypted_message;
 	int padding = 0;

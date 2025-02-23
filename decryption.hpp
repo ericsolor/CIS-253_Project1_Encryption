@@ -8,6 +8,7 @@
 class decryption {
 public:
 	decryption(const std::string& msg);
+	decryption(const std::string& msg, const bool demo);
 	int getN() { return n; }
 	void parse();
 	void insertInMatrix();
@@ -17,6 +18,7 @@ public:
 	void unParse();
 
 private:
+	bool demoMode = false;
 	std::string message;
 	std::string encrypted_message;
 	std::string decrypted_message;

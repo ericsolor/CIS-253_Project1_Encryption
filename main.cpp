@@ -71,8 +71,8 @@ int main() {
 					msg += line;
 				}
 				file.close();
-				decryption dec(msg);
-				std::cout << "\nRan Sucessfully\n";
+				decryption dec(msg, enc.getDemoMode());
+				std::cout << "Ran Sucessfully\n";
 				break;
 			}
 			default:

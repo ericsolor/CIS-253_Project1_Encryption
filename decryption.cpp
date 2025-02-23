@@ -2,6 +2,24 @@
 #include <cmath>
 #include <iostream>
 
+decryption::decryption(const std::string& msg, const bool demo) { // constructor for encryption class
+
+	if (demo) {
+		std::cout << "\nNow Decrypting '" << msg << "'... \n\n";
+		demoMode = demo;
+		encrypted_message = msg;
+		parse();
+		insertInMatrix();
+		shiftOperations();
+		transposeMatrix();
+		unParse();
+		sendToFile();
+	}
+	else {
+		std::cout << "Something went really wrong somewhere. Accessing Demo Mode while false?\n\n";
+	}
+}
+
 decryption::decryption(const std::string& msg) { // constructor for encryption class
 	encrypted_message = msg;
 	parse();
@@ -22,10 +40,14 @@ void decryption::parse() {
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
 
-	for (std::string c : OGparsed) {
-		std::cout << c << ", ";
+	
+	if (demoMode) {
+		std::cout << "The message after being parsed: \n\n";
+		for (std::string c : OGparsed) {
+			std::cout << c << ", ";
+		}
+		std::cout << std::endl << std::endl;
 	}
-	std::cout << std::endl << std::endl;
 
 	padding = std::stoi(OGparsed.back());
 	OGparsed.pop_back();
@@ -49,13 +71,16 @@ void decryption::insertInMatrix() {
 		}
 	}
 
-	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
-		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
-			std::cout << matrix[i][j] << " ";
+	if (demoMode) {
+		std::cout << "The message after it has been inserted into the matrix: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrix[i][j] << " ";
+			}
+			std::cout << std::endl;
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 /*--------------------------------------------------------------------------
@@ -70,13 +95,16 @@ void decryption::transposeMatrix() {
 		}
 	}
 
-	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
-		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
-			std::cout << matrixTransposed[i][j] << " ";
+	if (demoMode) {
+		std::cout << "The message after it has been transposed: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrixTransposed[i][j] << " ";
+			}
+			std::cout << std::endl;
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 /*---------------------------------------------------------------------------
@@ -89,14 +117,34 @@ void decryption::shiftOperations() {
 		for (int j = 0; j < n; j++) { // traversing through columns
 			unsigned char c = static_cast<unsigned char>(matrix[i][j][0]);
 			if (j % 2 == 0) { // determing if row is even
-				c = (c >> 1); // rotating bits left
+				bool lsb = (c & 0x01) != 0;
+				c = (c >> 1); // rotating bits right
+				if (lsb) {
+					c |= 0x08;
+				}
 			}
 			else { // else it is odd
-				c = (c << 1); // rotating bits right
+				bool msb = (c & 0x80) != 0;
+				c = (c << 1); // rotating bits left
+				if (msb) {
+					c |= 0x01;
+				}
 			}
-			matrix[i][j] = std::string(1, static_cast<unsigned char>(c));
+			matrix[i][j] = std::string(1, static_cast<char>(c));
 		}
 	}
+
+	if (demoMode) {
+		std::cout << "The message after it has been shifted: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrix[i][j] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+
 }
 
 /*---------------------------------------------------------------------
@@ -118,10 +166,12 @@ void decryption::unParse() {
 		decrypted_message += c; // appending character into the string
 	}
 
-	for (std::string c : DCparsed) {
-		std::cout << c << ", ";
+	if (demoMode) {
+		for (std::string c : DCparsed) {
+			std::cout << c << ", ";
+		}
+		std::cout << std::endl << std::endl;
 	}
-	std::cout << std::endl << std::endl;
 }
 
 /*----------------------------------------------------------

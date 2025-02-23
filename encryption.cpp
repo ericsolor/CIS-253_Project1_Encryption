@@ -2,7 +2,13 @@
 #include <cmath>
 #include <iostream>
 
-encryption::encryption(const std::string& msg) { // constructor for encryption class
+encryption::encryption(const std::string& msg, bool demo) { // constructor for encryption class
+
+	if (demo) {
+		std::cout << "\nNow Encrypting 'Hello, world!'... \n\n";
+		demoMode = demo;
+	}
+
 	message = msg;
 	parse();
 	insertInMatrix();
@@ -31,10 +37,13 @@ void encryption::parse() {
 		padding++;
 	}
 
-	for (std::string c : OGparsed) {
-		std::cout << c << ", ";
+	if (demoMode) {
+		std::cout << "The message after being parsed and filled to make its size a perfect square root: \n\n";
+		for (std::string c : OGparsed) {
+			std::cout << c << ", ";
+		}
+		std::cout << std::endl << std::endl;
 	}
-	std::cout << std::endl << std::endl;
 }
 
 /*--------------------------------------------------
@@ -52,13 +61,16 @@ void encryption::insertInMatrix() {
 		}
 	}
 
-	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
-		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
-			std::cout << matrix[i][j] << " ";
+	if (demoMode) {
+		std::cout << "The message after it has been inserted into the matrix: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrix[i][j] << " ";
+			}
+			std::cout << std::endl;
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 /*--------------------------------------------------------------------------
@@ -73,13 +85,16 @@ void encryption::transposeMatrix() {
 		}
 	}
 
-	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
-		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
-			std::cout << matrixTransposed[i][j] << " ";
+	if (demoMode) {
+		std::cout << "The message after it has been transposed: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrixTransposed[i][j] << " ";
+			}
+			std::cout << std::endl;
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 /*---------------------------------------------------------------------------
@@ -92,14 +107,34 @@ void encryption::shiftOperations() {
 		for (int j = 0; j < n; j++) { // traversing through columns
 			unsigned char c = static_cast<unsigned char>(matrixTransposed[i][j][0]);
 			if (j % 2 == 0) { // determing if row is even
+				bool msb = (c & 0x80) != 0;
 				c = (c << 1); // rotating bits left
+				if (msb) {
+					c |= 0x01;
+				}
 			}
 			else { // else it is odd
+				bool lsb = (c & 0x01) != 0;
 				c = (c >> 1); // rotating bits right
+				if (lsb) {
+					c |= 0x80;
+				}
 			}
-			matrixTransposed[i][j] = std::string(1, static_cast<unsigned char>(c));
+			matrixTransposed[i][j] = std::string(1, static_cast<char>(c));
 		}
 	}
+
+	if (demoMode) {
+		std::cout << "The message after it has been shifted: \n\n";
+		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+				std::cout << matrixTransposed[i][j] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+
 }
 
 /*---------------------------------------------------------------------
@@ -117,10 +152,13 @@ void encryption::unParse() {
 		encrypted_message += c; // appending character into the string
 	}
 
-	for (std::string c : ENparsed) {
-		std::cout << c << ", ";
+	if (demoMode) {
+		std::cout << "Message after it has been extracted from the matrix: \n\n";
+		for (std::string c : ENparsed) {
+			std::cout << c << ", ";
+		}
+		std::cout << std::endl << std::endl;
 	}
-	std::cout << std::endl << std::endl;
 }
 
 /*----------------------------------------------------------
