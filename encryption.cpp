@@ -103,7 +103,6 @@ void encryption::shiftOperations() {
 This function is to unparse the matrix into a vector then into a string
 *///-------------------------------------------------------------------
 void encryption::unParse() {
-	ENparsed.resize(n * n); // resizing the vector into size n^2
 
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
