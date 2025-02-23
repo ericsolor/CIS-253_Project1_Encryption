@@ -82,7 +82,7 @@ int main() {
 				break;
 			case 5: { // do n sizes match (default constructor)
 				encryption enc;
-				std::cout << "Encryption n: " << enc.getN();
+				std::cout << "Encryption n: " << enc.getN() << std::endl;
 				while (std::getline(file, line)) {
 					msg += line;
 					std::cout << "are we stuck?\n";
@@ -99,7 +99,6 @@ int main() {
 				std::cin >> userChoice;
 		}
 			std::cout << "Please select another option from the menu: ";
-			//std::cin.clear();
 			std::cin >> userChoice;
 	}
 	return 0;
