@@ -20,6 +20,7 @@ public:
 private:
 	std::string message;
 	std::string encrypted_message;
+	int padding = 0;
 	int n; // n represents the number of rows and columns of the matrix derived by taking the square root of message_size
 	std::vector<std::string> OGparsed;
 	std::vector<std::string> ENparsed;

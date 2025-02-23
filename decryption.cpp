@@ -22,13 +22,16 @@ void decryption::parse() {
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
 
-	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
-	// in std::ceil to round up to the next whole number
-
 	for (std::string c : OGparsed) {
 		std::cout << c << ", ";
 	}
 	std::cout << std::endl << std::endl;
+
+	padding = std::stoi(OGparsed.back());
+	OGparsed.pop_back();
+
+	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
+	// in std::ceil to round up to the next whole number
 }
 
 /*--------------------------------------------------
@@ -105,6 +108,10 @@ void decryption::unParse() {
 		for (int j = 0; j < n; j++) { // traversing through columns
 			DCparsed.push_back(matrixTransposed[i][j]); // inserting characters from current position in matrix to vector
 		}
+	}
+
+	for (int i = 0; i < padding; i++) {
+		DCparsed.pop_back();
 	}
 
 	for (std::string c : DCparsed) { // traversing through every character in vector

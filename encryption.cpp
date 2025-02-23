@@ -28,6 +28,7 @@ void encryption::parse() {
 	// filling the vector with 0's to obtain the size n^2
 	while (OGparsed.size() < n * n) {
 		OGparsed.push_back("0");
+		padding++;
 	}
 
 	for (std::string c : OGparsed) {
@@ -125,7 +126,7 @@ This function sends the encrypted message into encrypted.txt
 *///--------------------------------------------------------
 void encryption::sendToFile() {
 	std::ofstream out("encrypted_message.txt", std::ios::binary); // opening the file in binary?
-	out << encrypted_message; // sending encrypted message to the file
+	out << encrypted_message << std::to_string(padding); // sending encrypted message to the file
 
 	out.close(); // closing the file
 }
