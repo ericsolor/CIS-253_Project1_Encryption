@@ -95,7 +95,7 @@ int main() {
 					std::cout << "are we stuck?\n";
 					std::cout << "EOF: " << file.eof() << ", Fail: " << file.fail() << "\n";
 				}
-
+				break; // temp
 				decryption dec(msg);
 				std::cout << "Decryption n: " << dec.getN() << std::endl;
 				break;

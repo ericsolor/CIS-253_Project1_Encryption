@@ -1,5 +1,6 @@
 #include "encryption.hpp"
 #include <cmath>
+#include <iostream>
 
 encryption::encryption(const std::string& msg) { // constructor for encryption class
 	message = msg;
@@ -8,7 +9,7 @@ encryption::encryption(const std::string& msg) { // constructor for encryption c
 	transposeMatrix();
 	//shiftOperations();
 	unParse();
-	sendToFile();
+	//sendToFile();
 }
 
 /*-----------------------------------------------------------------
@@ -16,7 +17,8 @@ encryption::encryption(const std::string& msg) { // constructor for encryption c
  the vector
 *///---------------------------------------------------------------
 void encryption::parse() {
-	for (char c: message) { // Range based for loop to go through each character in message, storing it in c
+	for (char ch: message) { // Range based for loop to go through each character in message, storing it in c
+		std::string c(1, ch);
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
  
@@ -27,13 +29,18 @@ void encryption::parse() {
 	while (OGparsed.size() < n * n) {
 		OGparsed.push_back(0);
 	}
+
+	for (std::string c : OGparsed) {
+		std::cout << c << ", ";
+	}
+	std::cout << std::endl;
 }
 
 /*--------------------------------------------------
 Inserting the parsed message in the matrix sized nxn
 *///------------------------------------------------
 void encryption::insertInMatrix() {
-	matrix.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector matrix to n x n and initializing to 0 to
+	matrix.resize(n, std::vector<std::string>(n, '0')); // resizing the 2-D vector matrix to n x n and initializing to 0 to
 												 // avoid errors
 	int index = 0;
 
@@ -43,19 +50,35 @@ void encryption::insertInMatrix() {
 			index++; // increasing index to navigate to the next char
 		}
 	}
+
+	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+			std::cout << matrix[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 /*--------------------------------------------------------------------------
 Transposing the original matrix using matrixTransposed as the updated matrix
 *///------------------------------------------------------------------------
 void encryption::transposeMatrix() {
-	matrixTransposed.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
+	matrixTransposed.resize(n, std::vector<std::string>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
 
 	for (int i = 0; i < n; i++) { // traversing through the rows
 		for (int j = 0; j < n; j++) { // traversing through the columns
 			matrixTransposed[i][j] = matrix[j][i]; // using the definition of transposing a matrix
 		}
 	}
+
+	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+			std::cout << matrixTransposed[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 /*---------------------------------------------------------------------------
@@ -67,10 +90,10 @@ void encryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
 			if (j % 2 == 0) { // determing if row is even
-				matrixTransposed[i][j] = (matrixTransposed[i][j] << 1); // rotating bits left
+				//matrixTransposed[i][j] = (matrixTransposed[i][j] << 1); // rotating bits left
 			}
 			else { // else it is odd
-				matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1); // rotating bits right
+				//matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1); // rotating bits right
 			}
 		}
 	}
@@ -88,9 +111,14 @@ void encryption::unParse() {
 		}
 	}
 
-	for (char c : ENparsed) { // traversing through every character in vector
+	for (std::string c : ENparsed) { // traversing through every character in vector
 		encrypted_message += c; // appending character into the string
 	}
+
+	for (std::string c : ENparsed) {
+		std::cout << c << ", ";
+	}
+	std::cout << std::endl;
 }
 
 /*----------------------------------------------------------
