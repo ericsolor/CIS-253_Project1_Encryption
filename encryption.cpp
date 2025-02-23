@@ -90,14 +90,14 @@ rotating bits right if the current column is odd
 void encryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
-			char c = matrixTransposed[i][j][0];
+			unsigned char c = static_cast<unsigned char>(matrixTransposed[i][j][0]);
 			if (j % 2 == 0) { // determing if row is even
 				c = (c << 1); // rotating bits left
 			}
 			else { // else it is odd
 				c = (c >> 1); // rotating bits right
 			}
-			matrixTransposed[i][j] = std::string(1, c);
+			matrixTransposed[i][j] = std::string(1, static_cast<unsigned char>(c));
 		}
 	}
 }
