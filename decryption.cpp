@@ -17,19 +17,25 @@ decryption::decryption(const std::string& msg) { // constructor for encryption c
  the vector
 *///---------------------------------------------------------------
 void decryption::parse() {
-	for (char c : encrypted_message) { // Range based for loop to go through each character in message, storing it in c
+	for (char ch : encrypted_message) { // Range based for loop to go through each character in message, storing it in c
+		std::string c(1, ch);
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
 
 	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
 	// in std::ceil to round up to the next whole number
+
+	for (std::string c : OGparsed) {
+		std::cout << c << ", ";
+	}
+	std::cout << std::endl << std::endl;
 }
 
 /*--------------------------------------------------
 Inserting the parsed message in the matrix sized nxn
 *///------------------------------------------------
 void decryption::insertInMatrix() {
-	matrix.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector matrix to n x n and initializing to 0 to
+	matrix.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector matrix to n x n and initializing to 0 to
 												 // avoid errors
 	int index = 0;
 
@@ -39,19 +45,35 @@ void decryption::insertInMatrix() {
 			index++; // increasing index to navigate to the next char
 		}
 	}
+
+	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+			std::cout << matrix[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 /*--------------------------------------------------------------------------
 Transposing the original matrix using matrixTransposed as the updated matrix
 *///------------------------------------------------------------------------
 void decryption::transposeMatrix() {
-	matrixTransposed.resize(n, std::vector<char>(n, '0')); // resizing the 2-D vector to n x n and initializing it to zero
+	matrixTransposed.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector to n x n and initializing it to zero
 
 	for (int i = 0; i < n; i++) { // traversing through the rows
 		for (int j = 0; j < n; j++) { // traversing through the columns
 			matrixTransposed[i][j] = matrix[j][i]; // using the definition of transposing a matrix
 		}
 	}
+
+	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
+		for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
+			std::cout << matrixTransposed[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 /*---------------------------------------------------------------------------
@@ -64,10 +86,10 @@ void decryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
 			if (j % 2 == 0) { // determing if row is even
-				matrix[i][j] = (matrix[i][j] >> 1); // rotating bits left
+				//matrix[i][j] = (matrix[i][j] >> 1); // rotating bits left
 			}
 			else { // else it is odd
-				matrix[i][j] = (matrix[i][j] << 1); // rotating bits right
+				//matrix[i][j] = (matrix[i][j] << 1); // rotating bits right
 			}
 		}
 	}
@@ -78,7 +100,6 @@ void decryption::shiftOperations() {
 This function is to unparse the matrix into a vector then into a string
 *///-------------------------------------------------------------------
 void decryption::unParse() {
-	DCparsed.resize(n * n); // resizing the vector into size n^2
 
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
@@ -86,9 +107,14 @@ void decryption::unParse() {
 		}
 	}
 
-	for (char c : DCparsed) { // traversing through every character in vector
-		encrypted_message += c; // appending character into the string
+	for (std::string c : DCparsed) { // traversing through every character in vector
+		decrypted_message += c; // appending character into the string
 	}
+
+	for (std::string c : DCparsed) {
+		std::cout << c << ", ";
+	}
+	std::cout << std::endl << std::endl;
 }
 
 /*----------------------------------------------------------
@@ -97,7 +123,7 @@ This function sends the encrypted message into encrypted.txt
 void decryption::sendToFile() {
 	std::ofstream out("decrypted_message.txt", std::ios::binary); // opening the file (most likely creating a new file)
 
-	out << encrypted_message; // sending encrypted message to the file
+	out << decrypted_message; // sending encrypted message to the file
 
 	out.close(); // closing the file
 }

@@ -9,7 +9,7 @@ encryption::encryption(const std::string& msg) { // constructor for encryption c
 	transposeMatrix();
 	//shiftOperations();
 	unParse();
-	//sendToFile();
+	sendToFile();
 }
 
 /*-----------------------------------------------------------------
@@ -33,7 +33,7 @@ void encryption::parse() {
 	for (std::string c : OGparsed) {
 		std::cout << c << ", ";
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 }
 
 /*--------------------------------------------------
@@ -117,7 +117,7 @@ void encryption::unParse() {
 	for (std::string c : ENparsed) {
 		std::cout << c << ", ";
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 }
 
 /*----------------------------------------------------------

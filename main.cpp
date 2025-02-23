@@ -82,7 +82,6 @@ int main() {
 				break;
 			case 5: { // do n sizes match (default constructor)
 				encryption enc;
-				std::cout << "Encryption n: " << enc.getN() << std::endl;
 
 				file.open("encrypted_message.txt", std::ios::binary);
 				if (!file) { // checking if file did not open
@@ -92,12 +91,11 @@ int main() {
 
 				while (std::getline(file, line)) {
 					msg += line;
-					std::cout << "are we stuck?\n";
-					std::cout << "EOF: " << file.eof() << ", Fail: " << file.fail() << "\n";
+					//std::cout << "are we stuck?\n";
+					//std::cout << "EOF: " << file.eof() << ", Fail: " << file.fail() << "\n";
 				}
-				break; // temp
 				decryption dec(msg);
-				std::cout << "Decryption n: " << dec.getN() << std::endl;
+				std::cout << "\nRan Sucessfully\n";
 				break;
 			}
 			default:
