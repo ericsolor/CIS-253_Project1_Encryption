@@ -4,7 +4,7 @@
 
 decryption::decryption(const std::string& msg, const bool demo) { // constructor for encryption class
 
-	if (demo) {
+	if (demo) { // Confirming it's for demonstration
 		std::cout << "\nNow Decrypting '" << msg << "'... \n\n";
 		demoMode = demo;
 		encrypted_message = msg;
@@ -36,12 +36,12 @@ decryption::decryption(const std::string& msg) { // constructor for encryption c
 *///---------------------------------------------------------------
 void decryption::parse() {
 	for (char ch : encrypted_message) { // Range based for loop to go through each character in message, storing it in c
-		std::string c(1, ch);
+		std::string c(1, ch); // Converting the character into a string
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
 
 	
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after being parsed: \n\n";
 		for (std::string c : OGparsed) {
 			std::cout << c << ", ";
@@ -49,8 +49,8 @@ void decryption::parse() {
 		std::cout << std::endl << std::endl;
 	}
 
-	padding = std::stoi(OGparsed.back());
-	OGparsed.pop_back();
+	padding = std::stoi(OGparsed.back()); // retrieving the amount of added 0's to obtain an nxn matrix
+	OGparsed.pop_back(); // removing the coded amount because it is no longer needed
 
 	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
 	// in std::ceil to round up to the next whole number
@@ -61,7 +61,7 @@ Inserting the parsed message in the matrix sized nxn
 *///------------------------------------------------
 void decryption::insertInMatrix() {
 	matrix.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector matrix to n x n and initializing to 0 to
-												 // avoid errors
+												       // avoid errors
 	int index = 0;
 
 	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
@@ -71,7 +71,7 @@ void decryption::insertInMatrix() {
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been inserted into the matrix: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -95,7 +95,7 @@ void decryption::transposeMatrix() {
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been transposed: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -107,34 +107,34 @@ void decryption::transposeMatrix() {
 	}
 }
 
-/*---------------------------------------------------------------------------
-Primary function responsible for encrypting the message by performing bitwise
-operations on the matrix rotating bits left if the current column is even or
-rotating bits right if the current column is odd
-*///-------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------
+Primary function responsible for decrypting the message by performing bitwise
+shifts right if the current column is even or left if the current column is odd
+*///---------------------------------------------------------------------------
 void decryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
-			unsigned char c = static_cast<unsigned char>(matrix[i][j][0]);
+			unsigned char c = static_cast<unsigned char>(matrix[i][j][0]); // Extracting the string character and casting it to an
+																		   // unsigned char
 			if (j % 2 == 0) { // determing if row is even
-				bool lsb = (c & 0x01) != 0;
-				c = (c >> 1); // rotating bits right
-				if (lsb) {
-					c |= 0x08;
+				bool lsb = (c & 0x01) != 0; // checking if the right most bit (Least Significant Bit) is 1
+				c = (c >> 1); // shifting bits right once
+				if (lsb) { // if the LSB is 1
+					c |= 0x80; // restore it in the left most position now the Most Significant Bit
 				}
 			}
 			else { // else it is odd
-				bool msb = (c & 0x80) != 0;
-				c = (c << 1); // rotating bits left
-				if (msb) {
-					c |= 0x01;
+				bool msb = (c & 0x80) != 0; // checking if the left most bit (Most Significant Bit) is 1
+				c = (c << 1); // shifting bits left once
+				if (msb) { // if the MSB is 1
+					c |= 0x01; // restore it in the right most position now the Least Significant Bit
 				}
 			}
-			matrix[i][j] = std::string(1, static_cast<char>(c));
+			matrix[i][j] = std::string(1, static_cast<char>(c)); // inserting the shifted character back into the matrix as a string
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been shifted: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -158,7 +158,7 @@ void decryption::unParse() {
 		}
 	}
 
-	for (int i = 0; i < padding; i++) {
+	for (int i = 0; i < padding; i++) { // removing all the padding added to achieve a perfect square root
 		DCparsed.pop_back();
 	}
 
@@ -166,7 +166,7 @@ void decryption::unParse() {
 		decrypted_message += c; // appending character into the string
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		for (std::string c : DCparsed) {
 			std::cout << c << ", ";
 		}
@@ -174,13 +174,13 @@ void decryption::unParse() {
 	}
 }
 
-/*----------------------------------------------------------
-This function sends the encrypted message into encrypted.txt
-*///--------------------------------------------------------
+/*------------------------------------------------------------------
+This function sends the decrypted message into decrypted_message.txt
+*///----------------------------------------------------------------
 void decryption::sendToFile() {
-	std::ofstream out("decrypted_message.txt", std::ios::binary); // opening the file (most likely creating a new file)
+	std::ofstream out("decrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
 
-	out << decrypted_message; // sending encrypted message to the file
+	out << decrypted_message; // sending decrypted message to the file
 
 	out.close(); // closing the file
 }

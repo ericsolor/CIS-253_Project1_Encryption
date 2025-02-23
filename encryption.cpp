@@ -4,7 +4,7 @@
 
 encryption::encryption(const std::string& msg, bool demo) { // constructor for encryption class
 
-	if (demo) {
+	if (demo) { // checking if it's in demo mode
 		std::cout << "\nNow Encrypting 'Hello, world!'... \n\n";
 		demoMode = demo;
 	}
@@ -29,15 +29,15 @@ void encryption::parse() {
 	}
  
 	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
-										  // in std::ceil to round up to the next whole number
+											   // in std::ceil to round up to the next whole number
 
 	// filling the vector with 0's to obtain the size n^2
 	while (OGparsed.size() < n * n) {
 		OGparsed.push_back("0");
-		padding++;
+		padding++; // keeping track of how many 0's are added for padding
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after being parsed and filled to make its size a perfect square root: \n\n";
 		for (std::string c : OGparsed) {
 			std::cout << c << ", ";
@@ -51,7 +51,7 @@ Inserting the parsed message in the matrix sized nxn
 *///------------------------------------------------
 void encryption::insertInMatrix() {
 	matrix.resize(n, std::vector<std::string>(n, "0")); // resizing the 2-D vector matrix to n x n and initializing to 0 to
-												 // avoid errors
+														// avoid errors
 	int index = 0;
 
 	for (int i = 0; i < n; i++) { // navigating through rows of the matrix
@@ -61,7 +61,7 @@ void encryption::insertInMatrix() {
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been inserted into the matrix: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -85,7 +85,7 @@ void encryption::transposeMatrix() {
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been transposed: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -97,34 +97,34 @@ void encryption::transposeMatrix() {
 	}
 }
 
-/*---------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------
 Primary function responsible for encrypting the message by performing bitwise
-operations on the matrix rotating bits left if the current column is even or
-rotating bits right if the current column is odd
-*///-------------------------------------------------------------------------
+shifts right if the current column is even or left if the current column is odd
+*///---------------------------------------------------------------------------
 void encryption::shiftOperations() {
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
-			unsigned char c = static_cast<unsigned char>(matrixTransposed[i][j][0]);
+			unsigned char c = static_cast<unsigned char>(matrixTransposed[i][j][0]); // Extracting the string character and casting it to an
+																					 // unsigned char
 			if (j % 2 == 0) { // determing if row is even
-				bool msb = (c & 0x80) != 0;
-				c = (c << 1); // rotating bits left
-				if (msb) {
-					c |= 0x01;
+				bool msb = (c & 0x80) != 0; // checking if the left most bit (Most Significant Bit) is 1
+				c = (c << 1); // shifting bits left once
+				if (msb) { // if the MSB is 1
+					c |= 0x01; // restore it in the right most position now the Least Significant Bit
 				}
 			}
 			else { // else it is odd
-				bool lsb = (c & 0x01) != 0;
-				c = (c >> 1); // rotating bits right
-				if (lsb) {
-					c |= 0x80;
+				bool lsb = (c & 0x01) != 0; // checking if the right most bit (Least Significant Bit) is 1
+				c = (c >> 1); // // shifting bits right once
+				if (lsb) { // if the LSB is 1
+					c |= 0x80; // restore it in the left most position now the Most Significant Bit
 				}
 			}
-			matrixTransposed[i][j] = std::string(1, static_cast<char>(c));
+			matrixTransposed[i][j] = std::string(1, static_cast<char>(c)); // inserting the shifted character back into the matrix as a string
 		}
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "The message after it has been shifted: \n\n";
 		for (int i = 0; i < n; i++) { // navigating through rows of the matrix
 			for (int j = 0; j < n; j++) { // navigating through the columns of the matrix
@@ -152,7 +152,7 @@ void encryption::unParse() {
 		encrypted_message += c; // appending character into the string
 	}
 
-	if (demoMode) {
+	if (demoMode) { // displaying for demo mode
 		std::cout << "Message after it has been extracted from the matrix: \n\n";
 		for (std::string c : ENparsed) {
 			std::cout << c << ", ";
@@ -162,10 +162,10 @@ void encryption::unParse() {
 }
 
 /*----------------------------------------------------------
-This function sends the encrypted message into encrypted.txt
+This function sends the encrypted message into encrypted_message.txt
 *///--------------------------------------------------------
 void encryption::sendToFile() {
-	std::ofstream out("encrypted_message.txt", std::ios::binary); // opening the file in binary?
+	std::ofstream out("encrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
 	out << encrypted_message << std::to_string(padding); // sending encrypted message to the file
 
 	out.close(); // closing the file
