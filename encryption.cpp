@@ -27,7 +27,7 @@ void encryption::parse() {
 
 	// filling the vector with 0's to obtain the size n^2
 	while (OGparsed.size() < n * n) {
-		OGparsed.push_back(0);
+		OGparsed.push_back("0");
 	}
 
 	for (std::string c : OGparsed) {
