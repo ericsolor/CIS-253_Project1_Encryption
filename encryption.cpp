@@ -1,4 +1,5 @@
 #include "encryption.hpp"
+#include <cmath>
 
 encryption::encryption(const std::string& msg) { // constructor for encryption class
 	message = msg;
@@ -19,7 +20,7 @@ void encryption::parse() {
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
  
-	n = std::ceil(sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
+	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
 										  // in std::ceil to round up to the next whole number
 
 	// filling the vector with 0's to obtain the size n^2
@@ -100,12 +101,5 @@ void encryption::sendToFile() {
 
 	out << encrypted_message; // sending encrypted message to the file
 
-	// temporary just for debugging
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			out << matrixTransposed[i][j] << " ";
-		}
-		out << "\n";
-	}
 	out.close(); // closing the file
 }

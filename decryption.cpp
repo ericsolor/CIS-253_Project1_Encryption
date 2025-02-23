@@ -1,4 +1,6 @@
 #include "decryption.hpp"
+#include <cmath>
+#include <iostream>
 
 decryption::decryption(const std::string& msg) { // constructor for encryption class
 	encrypted_message = msg;
@@ -19,7 +21,7 @@ void decryption::parse() {
 		OGparsed.push_back(c); // Adding the character to the vector
 	}
 
-	n = std::ceil(sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
+	n = std::ceil(std::sqrt(OGparsed.size())); // Getting n by taking the square root of the message size wrapped 
 	// in std::ceil to round up to the next whole number
 }
 
@@ -58,16 +60,18 @@ operations on the matrix rotating bits left if the current column is even or
 rotating bits right if the current column is odd
 *///-------------------------------------------------------------------------
 void decryption::shiftOperations() {
+	std::cout << "made it to shift operations\n";
 	for (int i = 0; i < n; i++) { // traversing through rows
 		for (int j = 0; j < n; j++) { // traversing through columns
 			if (j % 2 == 0) { // determing if row is even
-				matrixTransposed[i][j] = (matrixTransposed[i][j] >> 1); // rotating bits left
+				matrix[i][j] = (matrix[i][j] >> 1); // rotating bits left
 			}
 			else { // else it is odd
-				matrixTransposed[i][j] = (matrixTransposed[i][j] << 1); // rotating bits right
+				matrix[i][j] = (matrix[i][j] << 1); // rotating bits right
 			}
 		}
 	}
+	std::cout << "made it through shitOperations\n";
 }
 
 /*---------------------------------------------------------------------
@@ -95,12 +99,5 @@ void decryption::sendToFile() {
 
 	out << encrypted_message; // sending encrypted message to the file
 
-	// temporary just for debugging
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			out << matrixTransposed[i][j] << " ";
-		}
-		out << "\n";
-	}
 	out.close(); // closing the file
 }

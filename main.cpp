@@ -11,13 +11,21 @@ int main() {
 
 	std::cout << "Input: ";
 	std::cin >> userChoice;
+	std::cin.ignore();
 
 	while (userChoice != 4) {
 			switch (userChoice) {
 			case 1: { // (Encrypt message)
+				msg.clear();
 				std::cout << "Please enter path to the message .txt file: ";
+				std::cin.ignore();
 				std::getline(std::cin, userInput);
-				file.open(userInput);
+
+				file.open("encrypted_message.txt", std::ios::binary); // open in binary mode to fix shift errors?
+				if (!file) { // checking if file did not open
+					std::cerr << "File could not be opened";
+					break;
+				}
 
 				while (std::getline(file, line)) {
 					msg += line;
@@ -29,8 +37,14 @@ int main() {
 			}
 			case 2: { // (Decrypt Message)
 				std::cout << "Please enter path to the message .txt file: ";
+				std::cin.ignore();
 				std::getline(std::cin, userInput);
-				file.open(userInput);
+
+				file.open("encrypted_message.txt", std::ios::binary); // open in binary mode to fix shift errors?
+				if (!file) { // checking if file did not open
+					std::cerr << "File could not be opened";
+					break;
+				}
 
 				while (std::getline(file, line)) {
 					msg += line;
@@ -41,12 +55,25 @@ int main() {
 				break;
 			}
 			case 3: { // (Test)
-				encryption enc();
-				file.open("encrypted_message.txt");
+				encryption enc;
+
+				file.open("encrypted_message.txt", std::ios::binary); // open in binary mode to fix shift errors?
+				if (!file) { // checking if file did not open
+					std::cerr << "File could not be opened";
+					break;
+				}
+
+				std::cout << "File Opened Successfully \n";
+
+				file.clear();
+
 				while (std::getline(file, line)) {
 					msg += line;
+					std::cout << "are we stuck?\n";
+					std::cout << "EOF: " << file.eof() << ", Fail: " << file.fail() << "\n";
 				}
 				file.close();
+				std::cout << "loop ended file closed\n";
 				decryption decrypt(msg);
 				std::cout << "\n\nRan Successfully :) \n\n";
 				break;
@@ -54,10 +81,13 @@ int main() {
 			case 4: // (Exit)
 				break;
 			default:
-			std::cout << "Invalid menu option \n";
-			std::cout << "Please select another option from the menu: ";
-			std::cin >> userChoice;
+				std::cout << "Invalid menu option \n";
+				std::cout << "Please select another option from the menu: ";
+				std::cin >> userChoice;
 		}
+			std::cout << "Please select another option from the menu: ";
+			std::cin.ignore();
+			std::cin >> userChoice;
 	}
 	return 0;
 }
