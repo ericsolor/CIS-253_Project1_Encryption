@@ -18,10 +18,10 @@ int main() {
 			case 1: { // (Encrypt message)
 				msg.clear();
 				std::cout << "Please enter path to the message .txt file: ";
-				std::cin.ignore();
-				std::getline(std::cin, userInput);
+				//std::cin.ignore();
+				//std::getline(std::cin, userInput);
 
-				file.open("encrypted_message.txt", std::ios::binary); // open in binary mode to fix shift errors?
+				file.open(userInput, std::ios::binary); // open in binary mode to fix shift errors?
 				if (!file) { // checking if file did not open
 					std::cerr << "File could not be opened";
 					break;
@@ -40,7 +40,7 @@ int main() {
 				std::cin.ignore();
 				std::getline(std::cin, userInput);
 
-				file.open("encrypted_message.txt", std::ios::binary); // open in binary mode to fix shift errors?
+				file.open(userInput, std::ios::binary); // open in binary mode to fix shift errors?
 				if (!file) { // checking if file did not open
 					std::cerr << "File could not be opened";
 					break;
@@ -80,13 +80,26 @@ int main() {
 			}
 			case 4: // (Exit)
 				break;
+			case 5: { // do n sizes match (default constructor)
+				encryption enc;
+				std::cout << "Encryption n: " << enc.getN();
+				while (std::getline(file, line)) {
+					msg += line;
+					std::cout << "are we stuck?\n";
+					std::cout << "EOF: " << file.eof() << ", Fail: " << file.fail() << "\n";
+				}
+				decryption dec(msg);
+				std::cout << "Decryption n: " << dec.getN() << std::endl;
+				break;
+			}
 			default:
 				std::cout << "Invalid menu option \n";
 				std::cout << "Please select another option from the menu: ";
+				std::cin.ignore();
 				std::cin >> userChoice;
 		}
 			std::cout << "Please select another option from the menu: ";
-			std::cin.ignore();
+			//std::cin.clear();
 			std::cin >> userChoice;
 	}
 	return 0;

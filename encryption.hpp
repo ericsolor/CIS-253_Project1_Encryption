@@ -9,6 +9,7 @@ class encryption {
 public:
 	encryption() : encryption("Hello, world!") {}
 	encryption(const std::string& msg);
+	int getN() { return n; }
 	void parse();
 	void insertInMatrix();
 	void transposeMatrix();

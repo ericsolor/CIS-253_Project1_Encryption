@@ -8,6 +8,7 @@
 class decryption {
 public:
 	decryption(const std::string& msg);
+	int getN() { return n; }
 	void parse();
 	void insertInMatrix();
 	void transposeMatrix();
