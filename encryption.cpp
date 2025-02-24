@@ -165,7 +165,19 @@ void encryption::unParse() {
 This function sends the encrypted message into encrypted_message.txt
 *///--------------------------------------------------------
 void encryption::sendToFile() {
-	std::ofstream out("encrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
+	std::ofstream out;
+
+	try { // try catch to ensure file opens properly
+		out.open("encrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
+		if (!out) { // checking if file did not open
+			throw std::runtime_error("File could not be opened writing encrypted message to file");
+		}
+	}
+	catch (const std::runtime_error& e) { // file did not open properly
+		std::cout << "Error: " << e.what();
+		return;
+	}
+
 	out << encrypted_message << std::to_string(padding); // sending encrypted message to the file
 
 	out.close(); // closing the file

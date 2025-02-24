@@ -178,7 +178,17 @@ void decryption::unParse() {
 This function sends the decrypted message into decrypted_message.txt
 *///----------------------------------------------------------------
 void decryption::sendToFile() {
-	std::ofstream out("decrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
+	std::ofstream out;
+	try { // try catch to ensure file opens properly
+		out.open("encrypted_message.txt", std::ios::binary); // opening the file in binary to bit corruption
+		if (!out) { // checking if file did not open
+			throw std::runtime_error("File could not be opened writing decrypted message to file");
+		}
+	}
+	catch (const std::runtime_error& e) { // file did not open properly
+		std::cout << "Error: " << e.what();
+		return;
+	}
 
 	out << decrypted_message; // sending decrypted message to the file
 
